@@ -1,0 +1,2 @@
+class hub:
+    pass
