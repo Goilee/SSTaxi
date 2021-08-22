@@ -26,10 +26,11 @@ class ClientSocket:
             if send == 0:
                 raise RuntimeError("socket connection broken while send")
             totalsend += send
-    def startingCon(self, ip, port):
-        self.sock.connect((ip,port))
+
+    def startingCon(self, ip, port, wlcMsg):
+        self.sock.connect((ip, port))
         while self.receive(self).decode() != "Hi":
-            self.send("Rob")
+            self.send(wlcMsg)
         print("connected")
 
     def waitMSG(self):
@@ -51,3 +52,7 @@ class ClientSocket:
             print("Here")
         else:
             self.sendMSG(msg)
+    def sendCross(self, int):
+        self.sendMSG(str(int))
+    
+

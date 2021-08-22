@@ -2,11 +2,25 @@ import socket
 
 
 class ServerSocket:
-    def __init__(self, sock=None):
+    def __init__(self, sock=None, ip="", port=0, wlcMsg=""):
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         else:
             self.sock = sock
+        self.sock.bind((ip, port))
+        self.sock.listen(5)
+        self.startingCon()
+        print("connection started")
+        while True:
+            (self.clisock, address) = self.sock.accept()
+            msg = self.receive().decode()
+            if msg == wlcMsg:
+                self.send("Hi")
+                print("connected")
+            else:
+                raise RuntimeError("wrong answer")
+                continue
+            break
 
     def receive(self):
         chunks = []
@@ -28,22 +42,6 @@ class ServerSocket:
             if send == 0:
                 raise RuntimeError("socket connection broken while send")
             totalSend += send
-
-    def startingCon(self, ip, port, wlcMsg):
-        self.sock.bind((ip, port))
-        self.sock.listen(5)
-        self.startingCon()
-        print("connection started")
-        while True:
-            (self.clisock, address) = self.sock.accept()
-            msg = self.receive().decode()
-            if msg == wlcMsg:
-                self.send("Hi")
-                print("connected")
-            else:
-                raise RuntimeError("wrong answer")
-                continue
-            break
 
     def waitMSG(self):
         msg = b''
