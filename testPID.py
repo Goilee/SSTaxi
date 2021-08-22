@@ -8,21 +8,9 @@ from pyglet.window import key
 import cv2
 import random as rng
 from gym_duckietown.envs import DuckietownEnv
+from CV_lines import something
 
 mask = np.zeros([400, 400, 1], dtype='float32')
-
-
-def glue(mat):
-    return np.append(np.append(mat[:, :, 0], mat[:, :, 1], 0), mat[:, :, 2], 0)
-
-
-def get_ct_color(contour, image):
-    mask = np.zeros(image.shape, dtype='uint8')
-    print(contour.shape)
-    cv2.fillPoly(mask, contour.swapaxes(0, 1), [255, 255, 255])
-    mask = mask & image
-    cv2.imshow('w', mask)
-    cv2.waitKey()
 
 
 class MoveController:
@@ -108,24 +96,8 @@ def update(dt):
     #action = mover.choose_action(env, obs)
 
     cv2.circle(mask, (env.cur_pos[[0, 2]]*100).astype("int32"), 1, [1])
-    mask_down_clear = obs[obs.shape[0] - 300:, :, :].copy()
-    mask_down = cv2.morphologyEx(mask_down_clear.astype('float32'), cv2.MORPH_GRADIENT, np.ones([3, 3]))
-    mask_down = ((mask_down[:, :, 0] + mask_down[:, :, 1] + mask_down[:, :, 2]) / 3).astype('uint8')
-    _, mask_down = cv2.threshold(mask_down, 20, 255, cv2.THRESH_BINARY_INV)
-    contours, hierarchy = cv2.findContours(mask_down.astype('uint8'), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-    drawing = np.zeros((mask_down.shape[0], mask_down.shape[1], 3), dtype=np.uint8)
-    for i in range(len(contours)):
-        if 250 < cv2.contourArea(contours[i]) < 30000:
-            approx = cv2.approxPolyDP(contours[i], 0.008 * cv2.arcLength(contours[i], True), True)
-            if not (250 < cv2.contourArea(approx) < 30000):
-                continue
-            M = cv2.moments(contours[i])
-            color_rgb = mask_down_clear[int(M["m01"] / M["m00"]), int(M["m10"] / M["m00"]), ::-1]
-            color_hsv = cv2.cvtColor(np.array([[color_rgb]]), cv2.COLOR_RGB2HSV)[0][0]
-            if color_hsv[2] > 70:
-                cv2.drawContours(drawing, [approx], 0, tuple([int(i) for i in color_rgb]), 3)
-    cv2.imshow('path', drawing)
-    cv2.waitKey(1)
+
+    something(obs)
     obs, reward, done, info = env.step(action)
 
     if key_handler[key.SPACE]:
