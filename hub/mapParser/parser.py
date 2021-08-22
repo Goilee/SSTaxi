@@ -48,7 +48,7 @@ def parseYAML2GRAPH(filename: str) -> nx.Graph:
     def follow(startCoords, dCoords, count = 0):
         coords = [startCoords[0] + dCoords[0], startCoords[1] + dCoords[1]]
         if type(tiles[coords[0]][coords[1]]) is list and (tiles[coords[0]][coords[1]][0][:-2] in ['3way_left', '3way_right'] or tiles[coords[0]][coords[1]][0] == '4way'):
-            dCoords = [dCoords[1] * -1, dCoords[0] * -1]
+            dCoords = [dCoords[1], dCoords[0] * -1]
             return [coords, count, dCoords]
         side = tiles[coords[0]][coords[1]][-1]
         item = tiles[coords[0]][coords[1]][:-2]
@@ -83,7 +83,7 @@ def parseYAML2GRAPH(filename: str) -> nx.Graph:
                 dCoords = rotateRight(dCoords)
                 if tiles[crossCoords[0] + dCoords[0]][crossCoords[1] + dCoords[1]] != -1:
                     [coords, length, direction] = follow(crossCoords, dCoords)
-                    graph.add_edge(tiles[crossCoords[0]][crossCoords[1]][1], tiles[coords[0]][coords[1]][1], weight = length, direction = [[dCoords[1], dCoords[0]], direction])
+                    graph.add_edge(tiles[crossCoords[0]][crossCoords[1]][1], tiles[coords[0]][coords[1]][1], weight = length, direction = [[dCoords[1], dCoords[0] * -1], direction])
                     parse(coords, graph)
         elif tiles[crossCoords[0]][crossCoords[1]][0][:-2] == '3way_left':
             dCoords = decodeSide(tiles[crossCoords[0]][crossCoords[1]][0][-1])
@@ -92,14 +92,14 @@ def parseYAML2GRAPH(filename: str) -> nx.Graph:
                 dCoords = rotateRight(dCoords)
                 if tiles[crossCoords[0] + dCoords[0]][crossCoords[1] + dCoords[1]] != -1:
                     [coords, length, direction] = follow(crossCoords, dCoords)
-                    graph.add_edge(tiles[crossCoords[0]][crossCoords[1]][1], tiles[coords[0]][coords[1]][1], weight = length, direction = [[dCoords[1], dCoords[0]], direction])
+                    graph.add_edge(tiles[crossCoords[0]][crossCoords[1]][1], tiles[coords[0]][coords[1]][1], weight = length, direction = [[dCoords[1], dCoords[0] * -1], direction])
                     parse(coords, graph)
         elif tiles[crossCoords[0]][crossCoords[1]][0][:-2] == '3way_right':
             dCoords = decodeSide(tiles[crossCoords[0]][crossCoords[1]][0][-1])
             for i in range(3):
                 if tiles[crossCoords[0] + dCoords[0]][crossCoords[1] + dCoords[1]] != -1:
                     [coords, length, direction] = follow(crossCoords, dCoords)
-                    graph.add_edge(tiles[crossCoords[0]][crossCoords[1]][1], tiles[coords[0]][coords[1]][1], weight = length, direction = [[dCoords[1], dCoords[0]], direction])
+                    graph.add_edge(tiles[crossCoords[0]][crossCoords[1]][1], tiles[coords[0]][coords[1]][1], weight = length, direction = [[dCoords[1], dCoords[0] * -1], direction])
                     parse(coords, graph)
                 dCoords = rotateRight(dCoords)
     
