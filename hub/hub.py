@@ -1,8 +1,13 @@
+from mapParser.parser import parseYAML2GRAPH
+from pathFinder.bfs import bfs
+from TCP.TCPServer import ServerSocket
+
 class hub:
     _initialPos = None
 
-    def __init__(self, TCPobj, pathFinder, parser, mapName) -> None:
-        self.TCPobj = TCPobj
+    def __init__(self, TCPobjR, TCPobjUI, pathFinder, parser, mapName) -> None:
+        self.TCPobjR = TCPobjR
+        self.TCPobjUI = TCPobjUI
         self.pathFinder = pathFinder
         print('Start parsing')
         self.pathGraph = parser(mapName)
@@ -14,10 +19,10 @@ class hub:
             initialPos = None
             try:
                 if self._initialPos == None:
-                    [initialPos, directionVector] = self.TCPobj.getInitialPos()
+                    [initialPos, directionVector] = self.TCPobjR.getInitialPos()
                 else:
                     [initialPos, directionVector] = self._initialPos
-                idsOfWay = self.TCPobj.getWay()
+                idsOfWay = self.TCPobjUI.getWay()
                 #Shortest path to startpoint
                 shortestPath = self.pathFinder(self.pathGraph, initialPos, idsOfWay[0])
                 for i in range(len(shortestPath)) - 1:
@@ -32,7 +37,7 @@ class hub:
                         directionToSend = "right"
                     else:
                         directionToSend = "forward"
-                    self.TCPobj.sendDirection(directionToSend)
+                    self.TCPobjR.sendDirection(directionToSend)
                 
                 self._initialPos = [idsOfWay[0], self.pathGraph.edges[shortestPath[-2], shortestPath[-1]]["direction"][1]]
                 #Shortest path to destination point
@@ -49,10 +54,19 @@ class hub:
                         directionToSend = "right"
                     else:
                         directionToSend = "forward"
-                    self.TCPobj.sendDirection(directionToSend)
+                    self.TCPobjR.sendDirection(directionToSend)
                 self._initialPos = [shortestPath[-1], self.pathGraph.edges[shortestPath[-2], shortestPath[-1]]["direction"][1]]
-                self.TCPobj.sendStopSign()
+                self.TCPobjUI.sendStopSign()
             except KeyboardInterrupt:
-                self.TCPobj.close()
+                self.TCPobjR.close()
+                self.TCPobjUI.close()
                 print('Connection closed')
                 break
+
+sSocketR = ServerSocket(2222)
+sSocketR.waitCon("Hello Robot")
+
+sSocketUI = ServerSocket(3333)
+sSocketUI.waitCon("Hello UI")
+
+h = hub(sSocketR, sSocketUI, bfs, parseYAML2GRAPH, '../map.yaml')
