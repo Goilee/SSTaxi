@@ -336,7 +336,7 @@ def update(dt):
 
     # print(round(env.cur_pos[0], 2), round(env.cur_pos[2], 2))
     # print("step_count = %s, reward=%.3f" % (env.unwrapped.step_count, reward))
-    img = cv2.cvtColor(observ, cv2.COLOR_BGR2RGB)
+    img = cv2.cvtColor(_observ, cv2.COLOR_BGR2RGB)
     # cv2.imshow("original", img)
     aruco_img = img.copy()
     aruco_marks = findArucoMarkers(aruco_img, draw=False)
