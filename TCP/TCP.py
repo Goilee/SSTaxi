@@ -3,9 +3,9 @@ import socket
 class TCP:
     def __init__(self,sock=None):
         if sock is None:
-            self.targsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         else:
-            self.targsock = sock
+            self.sock = sock
         self.targsock = None
         self.ipServer = '127.0.0.1'
     def __receive(self):

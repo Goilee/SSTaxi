@@ -4,12 +4,12 @@ from TCP import TCP
 class ServerSocket(TCP):
     def __init__(self, port):
         super().__init__()
-        self.targsock.bind((self.ipServer, port))
-        self.targsock.listen(5)
+        self.sock.bind((self.ipServer, port))
+        self.sock.listen(5)
         print("connection started")
     def waitCon(self, wlcMsg):
         while True:
-            (self.targsock, address) = self.targsock.accept()
+            (self.targsock, address) = self.sock.accept()
             msg = self.waitSTR()
             print(msg)
             if msg == wlcMsg:
@@ -32,4 +32,7 @@ class ServerSocket(TCP):
     def sendDirection(self, direction):
         self.sendSTR(direction)
         print("direction is " + direction)
-
+    def getInitialPos(self):
+        self.sendSTR("pos")
+        list = self.waitList()
+        return list

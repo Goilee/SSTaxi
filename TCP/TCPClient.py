@@ -13,5 +13,8 @@ class ClientSocket(TCP):
 
     def sendCross(self, int):
         self.sendMSG(str(int))
+    def sendPos(self, list):
+        self.waitSTR()
+        self.sendINT_List(list)
 
 
