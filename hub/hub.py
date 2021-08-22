@@ -1,17 +1,11 @@
 class hub:
     _initialPos = None
 
-    def _addEdges(self):
-        for i in self.pathGraph.edges:
-            edge = self.pathGraph.edges[i[0], i[1]]
-            self.pathGraph.add_edge(i[1], i[0], weight = edge["weight"], direction = [edge["direction"][1], edge["direction"][0]])
-
     def __init__(self, TCPobj, pathFinder, parser, mapName) -> None:
         self.TCPobj = TCPobj
         self.pathFinder = pathFinder
         print('Start parsing')
         self.pathGraph = parser(mapName)
-        self._addEdges()
         print('Parsing is done')
 
     def actionLoop(self):
@@ -62,8 +56,3 @@ class hub:
                 self.TCPobj.close()
                 print('Connection closed')
                 break
-                
-from mapParser.parser import parseYAML2GRAPH
-from pathFinder.bfs import bfs
-
-print(bfs(parseYAML2GRAPH('../map.yaml'), 0, 2))
