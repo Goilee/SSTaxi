@@ -1,73 +1,95 @@
 <!--кнопка начало-->
+{% load static %}
+<!--<img scr="/map_img.png" alt="Рабочее место" usemap="#workmap">-->
+<link href="{% static '/css.css' %}" rel="stylesheet">
+<div style="position: absolute;
+width: 289px;
+height: 50px;
+left: 531px;
+top: 125px;
+
+font-family: Montserrat;
+font-weight:Light;">{{msg}}</div>
+
+<div style="position: absolute;
+left: 531px;
+top: 130px;
+color: #ff0000;
+font-family: Montserrat;
+font-weight:bold;">{{Error}}</div>
+<div style="margin: center">
 
 <div style="position: absolute;
 width: 289px;
 height: 50px;
-left: 770px;
-top: 380px;
+left: 531px;
+top: 390px;
 
-font-family: Montserrat;">Выбранный маршрут = {{ route }}</div>
+font-family: Montserrat;
+font-weight:bold;">Выбранный маршрут = {{ route }}</div>
 
-<form action="#" method="post" >
-   {% csrf_token %}
 
-   <button type="submit"  style="
-  position: absolute;
-  width: 137px;
+
+
+
+
+ <div style="position: absolute;
+width: 289px;
 height: 50px;
-left: 770px;
+left: 531px;
+top: 390px;
+
+font-family: Montserrat;
+font-weight:bold;">Выбранный маршрут = {{ route }}</div>
+
+
+
+
+<button type="submit"  style="
+  position: absolute;
+  width: 240px;
+height: 50px;
+left: 531px;
 top: 166px;
 
 font-family: Montserrat;
 background: #8ADD49;
 border: 2px solid #8ADD49;
-border-radius: 18px;">
+border-radius: 18px;
+font-weight:bold;">
       Начало
   </button>
 
-
 <button type="submit" style="position: absolute;
-width: 137px;
+width: 240px;
 height: 50px;
-left: 770px;
+left: 531px;
 top: 241px;
 
 font-family: Montserrat;
 background: #DF5E5E;
 border: 2px solid #DF5E5E;
-border-radius: 18px;">
+border-radius: 18px;
+font-weight:bold;">
         Конец
 </button>
 
 
-</form>
 <!--блок под карту-->
-<div style="position: relative;
-width: 400px;
-height: 400px;
-top:  100px;
-left: 80px;
 
-font-family: Montserrat;
-background: #E1E1E1;
-border-radius: 6px;"></div>
-
+<div class = "map" style = "background-image: url({% static '/map_img.png' %})">
+    <form action="#" method="post" id="nodes">
+        {% csrf_token %}
+        <button name = 'city' value = '1' class = "btn" id = "city">but</button>
+        <button name = 'end' value = '2' class = "btn" id = "end" style = 'position: absolute;
+width: 100px;
+height: 50px;'>but</button>
+        </form>
+</div>
 
 <!--кнопка конеч-->
 <form action="#" method="POST" >
    {% csrf_token %}
-   <input type="text" class="form-control" id="end" value=""
-          name='end' placeholder="Конечная точка" style="position: absolute;
-width: 207px;
-height: 45px;
-left: 531px;
-top: 245px;">
-    <input type="text" class="form-control" id="city" placeholder="Начальная точка" value=""
-          name='city' style="position: absolute;
-width: 207px;
-height: 45px;
-left: 531px;
-top: 170px;">
  <button type="submit"  style="position: absolute;
 width: 369px;
 height: 50px;
@@ -78,11 +100,39 @@ background: #FFFFFF;
 border: 2px solid #000000;
 box-sizing: border-box;
 border-radius: 18px;
-font-family: Montserrat;">
+font-family: Montserrat;
+font-weight:bold;">
         Отправить
     </button>
 </form>
 
+<form action="#" method="POST" >
+   {% csrf_token %}
+ <button type="submit" name="err" value='err' style="position: absolute;
+width: 100px;
+height: 125px;
+left: 800px;
+top: 166px;
 
+background: #FFFFFF;
+border: 2px solid #000000;
+box-sizing: border-box;
+border-radius: 18px;
+font-family: Montserrat;
+font-weight:bold;">
+        Отмена
+    </button>
+</form>
 
+</div>
+<script>
+    var form = document.getElementById("nodes");
+    var cords_n_val = {{chod}};
+    var inner_str = ``
+    for(var i = 0; i < cords_n_val.length; i++){
+        let styles_str = ` left:${cords_n_val[i][0]}; top:${cords_n_val[i][1]} `
+        inner_str += `<button name = 'city' value = ${i} class = "btn" id = "city" style = ${styles_str} >but</button>`
+    }
+    form.innerHTML = inner_str
+</script>
 
