@@ -2,9 +2,9 @@ from .TCP import TCP
 
 
 class ServerSocket(TCP):
-    def __init__(self, port):
+    def __init__(self, port, ip):
         super().__init__()
-        self.sock.bind(('127.0.0.1', port))
+        self.sock.bind((ip, port))
         self.sock.listen(5)
         print("connection started")
     def waitCon(self, wlcMsg):
