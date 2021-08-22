@@ -1,0 +1,88 @@
+<!--кнопка начало-->
+
+<div style="position: absolute;
+width: 289px;
+height: 50px;
+left: 770px;
+top: 380px;
+
+font-family: Montserrat;">Выбранный маршрут = {{ route }}</div>
+
+<form action="#" method="post" >
+   {% csrf_token %}
+
+   <button type="submit"  style="
+  position: absolute;
+  width: 137px;
+height: 50px;
+left: 770px;
+top: 166px;
+
+font-family: Montserrat;
+background: #8ADD49;
+border: 2px solid #8ADD49;
+border-radius: 18px;">
+      Начало
+  </button>
+
+
+<button type="submit" style="position: absolute;
+width: 137px;
+height: 50px;
+left: 770px;
+top: 241px;
+
+font-family: Montserrat;
+background: #DF5E5E;
+border: 2px solid #DF5E5E;
+border-radius: 18px;">
+        Конец
+</button>
+
+
+</form>
+<!--блок под карту-->
+<div style="position: relative;
+width: 400px;
+height: 400px;
+top:  100px;
+left: 80px;
+
+font-family: Montserrat;
+background: #E1E1E1;
+border-radius: 6px;"></div>
+
+
+<!--кнопка конеч-->
+<form action="#" method="POST" >
+   {% csrf_token %}
+   <input type="text" class="form-control" id="end" value=""
+          name='end' placeholder="Конечная точка" style="position: absolute;
+width: 207px;
+height: 45px;
+left: 531px;
+top: 245px;">
+    <input type="text" class="form-control" id="city" placeholder="Начальная точка" value=""
+          name='city' style="position: absolute;
+width: 207px;
+height: 45px;
+left: 531px;
+top: 170px;">
+ <button type="submit"  style="position: absolute;
+width: 369px;
+height: 50px;
+left: 531px;
+top: 316px;
+
+background: #FFFFFF;
+border: 2px solid #000000;
+box-sizing: border-box;
+border-radius: 18px;
+font-family: Montserrat;">
+        Отправить
+    </button>
+</form>
+
+
+
+
