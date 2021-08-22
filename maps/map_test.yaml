@@ -40,22 +40,22 @@ objects:
   height: 0.18
   
  sign7:
-  kind: sign_4_way_intersect
+  kind: sign_4_2_way_intersect
   pos: [2.95, 1.95]
   rotate: 0
   height: 0.18
  sign8:
-  kind: sign_4_way_intersect
+  kind: sign_4_2_way_intersect
   pos: [2.95, 3.05]
   rotate: -90
   height: 0.18
  sign9:
-  kind: sign_4,2_way_intersect
+  kind: sign_4_2_way_intersect
   pos: [4.05, 3.05]
   rotate: 180
   height: 0.18
  sign10:
-  kind: sign_4,2_way_intersect
+  kind: sign_4_2_way_intersect
   pos: [4.05, 1.95]
   rotate: 90
   height: 0.18
