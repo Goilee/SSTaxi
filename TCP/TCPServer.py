@@ -2,25 +2,12 @@ import socket
 
 
 class ServerSocket:
-    def __init__(self, sock=None, ip="", port=0, wlcMsg=""):
+    def __init__(self,sock=None):
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         else:
             self.sock = sock
-        self.sock.bind((ip, port))
-        self.sock.listen(5)
-        self.startingCon()
-        print("connection started")
-        while True:
-            (self.clisock, address) = self.sock.accept()
-            msg = self.receive().decode()
-            if msg == wlcMsg:
-                self.send("Hi")
-                print("connected")
-            else:
-                raise RuntimeError("wrong answer")
-                continue
-            break
+
 
     def receive(self):
         chunks = []
@@ -48,11 +35,12 @@ class ServerSocket:
         while msg == b'':
             msg = self.receive()
         msg = msg.decode()
-        self.send("Here")
+        self.send("Here".encode())
         print(msg)
         return msg
 
     def sendMSG(self, msg):
+        msg = msg.encode()
         self.send(msg)
         msg2 = b''
         while msg2 == b'':
@@ -62,6 +50,22 @@ class ServerSocket:
             print("Here")
         else:
             self.sendMSG(msg)
+    def startingCon(self, ip, port, wlcMsg):
+        self.sock.bind((ip, port))
+        self.sock.listen(5)
+        print("connection started")
+        while True:
+            (self.clisock, address) = self.sock.accept()
+            msg = self.waitMSG()
+            print(msg)
+            if msg == wlcMsg:
+                self.sendMSG("Hi")
+
+                print("connected")
+            else:
+                raise RuntimeError("wrong answer")
+                continue
+            break
     def getCrossId(self):
         id = self.waitMSG()
         return int(id)

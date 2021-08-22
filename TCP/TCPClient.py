@@ -1,11 +1,10 @@
 import socket
 class ClientSocket:
-    def __init__(self, sock=None):
+    def __init__(self,sock=None):
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         else:
             self.sock = sock
-
     def receive(self):
         chunks = []
         bytes_recd = 0
@@ -29,8 +28,10 @@ class ClientSocket:
 
     def startingCon(self, ip, port, wlcMsg):
         self.sock.connect((ip, port))
-        while self.receive(self).decode() != "Hi":
-            self.send(wlcMsg)
+        self.sendMSG(wlcMsg)
+        msg = self.waitMSG().decode()
+        if msg != "hi":
+            print("troble")
         print("connected")
 
     def waitMSG(self):
@@ -38,11 +39,12 @@ class ClientSocket:
         while msg == b'':
             msg = self.receive()
         msg.decode()
-        self.send("Here")
+        self.send("Here".encode())
         print(msg)
         return msg
 
     def sendMSG(self, msg):
+        msg = msg.encode()
         self.send(msg)
         msg2 = b''
         while msg2 == b'':
@@ -54,5 +56,5 @@ class ClientSocket:
             self.sendMSG(msg)
     def sendCross(self, int):
         self.sendMSG(str(int))
-    
+
 
