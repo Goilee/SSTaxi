@@ -1,5 +1,4 @@
 from typing import List
-from networkx.algorithms.shortest_paths import weighted
 import yaml
 import networkx as nx
 
@@ -63,8 +62,18 @@ def parseYAML2GRAPH(filename: str) -> nx.Graph:
                 return follow(coords, [1, 0], count + 1)
             elif startCoords[0] - coords[0] == 1:
                 return follow(coords, [-1, 0], count + 1)
-        if item in ['curve_left', 'curve_right']:
-            return follow(coords, rotateRight(rotateRight(decodeSide(side))), count + 1)
+        if item == "curve_left":
+            dSide = decodeSide(side)
+            if (dSide[0] != 0 and dCoords[0] != 0) or (dSide[1] != 0 and dCoords[1] != 0):
+                return follow(coords, rotateRight(rotateRight(rotateRight(dSide))), count + 1)
+            else:
+                return follow(coords, rotateRight(rotateRight(dSide)), count + 1)
+        if item == "curve_right":
+            dSide = decodeSide(side)
+            if (dSide[0] != 0 and dCoords[0] != 0) or (dSide[1] != 0 and dCoords[1] != 0):
+                return follow(coords, rotateRight(dSide), count + 1)
+            else:
+                return follow(coords, rotateRight(rotateRight(dSide)), count + 1)
             
 
     def parse(crossCoords, graph):
