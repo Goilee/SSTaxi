@@ -1,10 +1,10 @@
 from .TCP import TCP
 from socket import SHUT_RDWR
 class ClientSocket(TCP):
-    def __init__(self,port, wlcMsg):
+    def __init__(self,port, wlcMsg, ip):
         super().__init__()
         self.targsock = self.sock
-        self.targsock.connect((self.ipServer, port))
+        self.targsock.connect((ip, port))
         self.sendSTR(wlcMsg)
         msg = self.waitSTR()
         if msg != "nihao":

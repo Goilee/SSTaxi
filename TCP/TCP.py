@@ -8,7 +8,6 @@ class TCP:
         else:
             self.sock = sock
         self.targsock = None
-        self.ipServer = '127.0.0.1'
     def __receive(self):
         chunks = []
         bytes_recd = 0
