@@ -1,4 +1,5 @@
 import socket
+from socket import SHUT_RDWR
 
 class TCP:
     def __init__(self,sock=None):
@@ -22,9 +23,9 @@ class TCP:
 
     def __send(self, msg):
         totalSend = 0
-        self.targsock.__send(bytes([len(msg)]))
+        self.targsock.send(bytes([len(msg)]))
         while totalSend < len(msg):
-            send = self.targsock.__send(msg[totalSend:])
+            send = self.targsock.send(msg[totalSend:])
             if send == 0:
                 raise RuntimeError("socket connection broken while send")
             totalSend += send
@@ -67,3 +68,6 @@ class TCP:
         msg2 = msg2.decode()
         if msg2 != "Here":
             self.sendINT(msg)
+    def close(self):
+        self.targsock.shutdown(SHUT_RDWR)
+        self.targsock.close()

@@ -1,4 +1,4 @@
-from TCP import TCP
+from .TCP import TCP
 
 
 class ServerSocket(TCP):
@@ -13,7 +13,7 @@ class ServerSocket(TCP):
             msg = self.waitSTR()
             print(msg)
             if msg == wlcMsg:
-                self.sendSTR("Hi")
+                self.sendSTR("nihao")
 
                 print("connected")
             else:
