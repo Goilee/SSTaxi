@@ -9,12 +9,12 @@ tiles:
 objects:
  sign1:
   kind: sign_right_T2_intersect
-  pos: [0.94, 2.60]
+  pos: [2.5, 3.05]
   rotate: 90
   height: 0.18
  sign2: 
   kind: sign_left_T2_intersect
-  pos: [0.94, 2.40]
+  pos: [0.95, 1.95]
   rotate: -90
   height: 0.18
  sign3: 
@@ -25,12 +25,12 @@ objects:
   
  sign4:
   kind: sign_right_T3_intersect
-  pos: [3.40, -0.05]
+  pos: [3.05, 1.05]
   rotate: 180
   height: 0.18
  sign5: 
   kind: sign_left_T3_intersect
-  pos: [3.60, -0.05]
+  pos: [4.05, -0.05]
   rotate: 0
   height: 0.18
  sign6:
