@@ -77,13 +77,20 @@ font-weight:bold;">
 
 <!--блок под карту-->
 
-<div class = "map" style = "background-image: url({% static '/map_img.png' %})">
+<div class = "map" style = "background-image: url({% static '/img.png' %})">
     <form action="#" method="post" id="nodes">
         {% csrf_token %}
         <button name = 'city' value = '1' class = "btn" id = "city">but</button>
-        <button name = 'end' value = '2' class = "btn" id = "end" style = 'position: absolute;
+        <button name = 'city' value = '2' class = "btn" id = "city" style = 'position: absolute;
+top: 50%;
+left: 50%; transform: translateX(-50%) translateY(-50%);'>but</button>
+        <button name = 'city' value = '3' class = "btn" id = "city" style = 'position: absolute;
 width: 100px;
-height: 50px;'>but</button>
+height: 50px;
+top: calc(100/7*4%);
+left: calc(100/7*6%);
+transform: translateX(calc(100/7*4%)) translateY(calc(100/7*6%));'>but</button>
+
         </form>
 </div>
 
@@ -124,15 +131,4 @@ font-weight:bold;">
     </button>
 </form>
 
-</div>
-<script>
-    var form = document.getElementById("nodes");
-    var cords_n_val = {{chod}};
-    var inner_str = ``
-    for(var i = 0; i < cords_n_val.length; i++){
-        let styles_str = ` left:${cords_n_val[i][0]}; top:${cords_n_val[i][1]} `
-        inner_str += `<button name = 'city' value = ${i} class = "btn" id = "city" style = ${styles_str} >but</button>`
-    }
-    form.innerHTML = inner_str
-</script>
 
