@@ -8,12 +8,13 @@ ACTION_MOVE_LEFT = 'left'
 ACTION_MOVE_TURNOVER = 'turnover'
 
 class MoveController:
-    def __init__(self, kp=20, kd=25, ki=0):
+    def __init__(self, kp=20, kd=25):
         self.speed = 0.3
         self.pid_ld = 0
-        self.kp, self.kd, self.ki = kp, kd, ki
+        self.kp, self.kd, self.ki = kp, kd, 0
         self.__state = ACTION_STOP
         self.__tmpdata = None
+        self.see_red = False
         self.__tflu = 0
 
     def pid(self, err):
@@ -29,15 +30,16 @@ class MoveController:
     def new_action(self, info):
         self.__state = info
 
-    def choose_action(self, env, camera, dt):
+    def get_move_values(self, env, camera, dt):
         action = np.array([0, 0])
         err_dir = env.get_lane_pos2(env.cur_pos, env.cur_angle).dist
         err_angle = env.get_lane_pos2(env.cur_pos, env.cur_angle).angle_rad
         if self.__state == ACTION_MOVE_TO_CR:
             mask_down = cv2.cvtColor(camera[camera.shape[0] - 100:,
                                      100:camera.shape[1] - 100, :], cv2.COLOR_RGB2HSV)
-            if (((10 > mask_down[:, :, 0]) | (mask_down[:, :, 0] > 165)) & (mask_down[:, :, 2] > 100)).sum() < 5000\
-                    or self.__tflu < 1:
+            self.see_red = (((10 > mask_down[:, :, 0]) | (mask_down[:, :, 0] > 165)) &
+                            (mask_down[:, :, 2] > 100)).sum() > 5000
+            if (not self.see_red) or self.__tflu < 1:
                 x = self.pid((err_dir-0.03) + err_angle/3)
                 action = np.array([self.speed - abs(x) / 30, x])
             else:

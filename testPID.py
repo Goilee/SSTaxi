@@ -23,7 +23,7 @@ def update(dt):
         pass
 
     # main control of machine
-    action = mover.choose_action(env, obs, dt)
+    action = mover.get_move_values(env, obs, dt)
 
     if key_handler[key.UP]:
         action += np.array([3, 0])
