@@ -48,4 +48,6 @@ def filter_bboxs(aruco_marks, aruco_img, drawing=True, debug=False):
                 ret_id = id
     if drawing:
         cv2.imshow('aruco img', aruco_img)
+    if ret_id is None:
+        ret_id = [255]
     return ret_id

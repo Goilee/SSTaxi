@@ -373,13 +373,13 @@ def update(dt):
 
     # if key_handler[key.F]:
     #     action = pd_driver(observ, env.unwrapped)
-    observ, reward, done, info = env.step(action)
+    _observ, reward, done, info = env.step(action)
 
     # white_mask = cv2.inRange(cutted_image, (10, 29, 77), (101, 84, 171))
     # cv2.imshow("white mask", white_mask)
 
     if key_handler[key.RETURN]:
-        im = Image.fromarray(observ)
+        im = Image.fromarray(_observ)
         im.save("pic.png")
 
     if done:

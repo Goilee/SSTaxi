@@ -1,21 +1,18 @@
-from PIL import Image
-import argparse
-import sys
-import gym
+# from PIL import Image
+# import argparse
+# import sys
+# import gym
 import numpy as np
-import pyglet
-from pyglet.window import key
 import cv2
-import cv2.aruco as aruco
-from TCP.TCPClient import ClientSocket
-import random as rng
-from gym_duckietown.envs import DuckietownEnv
+# import cv2.aruco as aruco
+# from TCP.TCPClient import ClientSocket
+# import random as rng
 
-cli_sock = ClientSocket(25565, 'hello server', '192.168.189.74')
+#cli_sock = ClientSocket(25565, 'hello server', '192.168.189.74')
 
 mask = np.zeros([400, 400, 1], dtype='float32')
 
-
+"""
 def findArucoMarkers(img, markerSize=6, totalMarkers=250, draw=True):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     key = getattr(aruco, f'DICT_{markerSize}X{markerSize}_{totalMarkers}')
@@ -26,7 +23,7 @@ def findArucoMarkers(img, markerSize=6, totalMarkers=250, draw=True):
     if draw:
         aruco.drawDetectedMarkers(img, bboxs)
     return [bboxs, ids]
-
+"""
 
 def glue(mat):
     return np.append(np.append(mat[:, :, 0], mat[:, :, 1], 0), mat[:, :, 2], 0)
@@ -64,12 +61,12 @@ class MoveController:
         return self.__state
 
     def new_info(self, info):
-        print('NEW INFO')
+        # print('NEW INFO')
         self.__state = info
 
     def choose_action(self, env, camera, aruco_id):
         action = np.array([0, 0])
-        print(self.__state)
+        # print(self.__state)
         if 'move' in self.__state:
             err_dir = env.get_lane_pos2(env.cur_pos, env.cur_angle).dist
             err_angle = env.get_lane_pos2(env.cur_pos, env.cur_angle).angle_rad
@@ -82,9 +79,18 @@ class MoveController:
                     x = self.pid((err_dir-0.03) + err_angle/3)
                     action = np.array([self.speed - abs(x) / 30, x])
                 else:
-                    self.__state = 'waiting'
-                    #print('send')
-                    print('fku', self.__state)
+                    if 'move_in' in self.__state and 'waiting' in self.__state:
+                        mask_down = cv2.cvtColor(camera[camera.shape[0] - 100:,
+                                                 100:camera.shape[1] - 100, :], cv2.COLOR_RGB2HSV)
+                        cv2.imshow('hsv', np.append(np.append(mask_down[:, :, 0],
+                                                              mask_down[:, :, 1], 0), mask_down[:, :, 2], 0))
+                        if (((10 > mask_down[:, :, 0]) | (mask_down[:, :, 0] > 165)) & (
+                                mask_down[:, :, 2] > 100)).sum() < 5000:
+                            x = self.pid((err_dir - 0.03) + err_angle / 3)
+                            action = np.array([self.speed - abs(x) / 30, x])
+                    else:
+                        self.__state = 'waiting/send'
+                        print('send', aruco_id)
                     # cli_sock.sendSTR(str(aruco_id))
                     # cli_sock.sendPos([int(env.cur_angle)])
             elif 'turn' in self.__state:
@@ -102,7 +108,7 @@ class MoveController:
                     pass
         return action
 
-
+"""
 def on_key_press(symbol, modifiers):
     if symbol == key.BACKSPACE or symbol == key.SLASH:
         print("RESET")
@@ -187,7 +193,7 @@ def update(dt):
             if color_hsv[2] > 70:
                 cv2.drawContours(drawing, [approx], 0, tuple([int(i) for i in color_rgb]), 3)
     cv2.imshow('path', drawing)
-    """lines_img = drawing.copy()
+    ines_img = drawing.copy()
     lines = cv2.HoughLines(mask_down, 4, np.pi / 180, 200)
     if lines is not None:
         for line in range(len(lines)):
@@ -201,7 +207,7 @@ def update(dt):
             x2 = int(x0 - 1000 * (-b))
             y2 = int(y0 - 1000 * a)
             cv2.line(lines_img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-    cv2.imshow("lines", lines_img)"""
+    cv2.imshow("lines", lines_img)
     #cv2.waitKey(1)
     obs, reward, done, info = env.step(action)
 
@@ -238,4 +244,4 @@ pyglet.clock.schedule_interval(update, 0.05)
 # Enter main event loop
 pyglet.app.run()
 
-env.close()
+env.close()"""
