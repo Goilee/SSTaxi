@@ -50,6 +50,7 @@ def parseYAML2GRAPH(filename: str) -> nx.Graph:
         if type(tiles[coords[0]][coords[1]]) is list and (tiles[coords[0]][coords[1]][0][:-2] in ['3way_left', '3way_right'] or tiles[coords[0]][coords[1]][0] == '4way'):
             dCoords = [dCoords[1], dCoords[0] * -1]
             return [coords, count, dCoords]
+        print(dCoords, tiles[coords[0]][coords[1]], tiles[startCoords[0]][startCoords[1]])
         side = tiles[coords[0]][coords[1]][-1]
         item = tiles[coords[0]][coords[1]][:-2]
         tiles[coords[0]][coords[1]] = -1
@@ -83,7 +84,8 @@ def parseYAML2GRAPH(filename: str) -> nx.Graph:
                 dCoords = rotateRight(dCoords)
                 if tiles[crossCoords[0] + dCoords[0]][crossCoords[1] + dCoords[1]] != -1:
                     [coords, length, direction] = follow(crossCoords, dCoords)
-                    graph.add_edge(tiles[crossCoords[0]][crossCoords[1]][1], tiles[coords[0]][coords[1]][1], weight = length, direction = [[dCoords[1], dCoords[0] * -1], direction])
+                    graph.add_edge(tiles[crossCoords[0]][crossCoords[1]][1], tiles[coords[0]][coords[1]][1], weight = length, direction = [[dCoords[1], dCoords[0] * -1], direction] if tiles[crossCoords[0]][crossCoords[1]][1] > tiles[coords[0]][coords[1]][1] else [direction, [dCoords[1], dCoords[0] * -1]])
+                    print([[dCoords[1], dCoords[0] * -1], direction] if tiles[crossCoords[0]][crossCoords[1]][1] > tiles[coords[0]][coords[1]][1] else [direction, [dCoords[1], dCoords[0] * -1]])
                     parse(coords, graph)
         elif tiles[crossCoords[0]][crossCoords[1]][0][:-2] == '3way_left':
             dCoords = decodeSide(tiles[crossCoords[0]][crossCoords[1]][0][-1])
@@ -92,14 +94,16 @@ def parseYAML2GRAPH(filename: str) -> nx.Graph:
                 dCoords = rotateRight(dCoords)
                 if tiles[crossCoords[0] + dCoords[0]][crossCoords[1] + dCoords[1]] != -1:
                     [coords, length, direction] = follow(crossCoords, dCoords)
-                    graph.add_edge(tiles[crossCoords[0]][crossCoords[1]][1], tiles[coords[0]][coords[1]][1], weight = length, direction = [[dCoords[1], dCoords[0] * -1], direction])
+                    graph.add_edge(tiles[crossCoords[0]][crossCoords[1]][1], tiles[coords[0]][coords[1]][1], weight = length, direction = [[dCoords[1], dCoords[0] * -1], direction] if tiles[crossCoords[0]][crossCoords[1]][1] > tiles[coords[0]][coords[1]][1] else [direction, [dCoords[1], dCoords[0] * -1]])
+                    print([[dCoords[1], dCoords[0] * -1], direction] if tiles[crossCoords[0]][crossCoords[1]][1] > tiles[coords[0]][coords[1]][1] else [direction, [dCoords[1], dCoords[0] * -1]])
                     parse(coords, graph)
         elif tiles[crossCoords[0]][crossCoords[1]][0][:-2] == '3way_right':
             dCoords = decodeSide(tiles[crossCoords[0]][crossCoords[1]][0][-1])
             for i in range(3):
                 if tiles[crossCoords[0] + dCoords[0]][crossCoords[1] + dCoords[1]] != -1:
                     [coords, length, direction] = follow(crossCoords, dCoords)
-                    graph.add_edge(tiles[crossCoords[0]][crossCoords[1]][1], tiles[coords[0]][coords[1]][1], weight = length, direction = [[dCoords[1], dCoords[0] * -1], direction])
+                    graph.add_edge(tiles[crossCoords[0]][crossCoords[1]][1], tiles[coords[0]][coords[1]][1], weight = length, direction = [[dCoords[1], dCoords[0] * -1], direction] if tiles[crossCoords[0]][crossCoords[1]][1] > tiles[coords[0]][coords[1]][1] else [direction, [dCoords[1], dCoords[0] * -1]])
+                    print([[dCoords[1], dCoords[0] * -1], direction] if tiles[crossCoords[0]][crossCoords[1]][1] > tiles[coords[0]][coords[1]][1] else [direction, [dCoords[1], dCoords[0] * -1]])
                     parse(coords, graph)
                 dCoords = rotateRight(dCoords)
     
@@ -108,4 +112,14 @@ def parseYAML2GRAPH(filename: str) -> nx.Graph:
     fstCross = findFstCross(tiles)
     tiles = updateCrosses(tiles)
     parse(fstCross, origin)
+    return origin
+
+def wrongParser(mapName):
+    origin = nx.MultiGraph()
+    origin.add_nodes_from([0, 1, 2])
+    origin.add_edge(0, 2, 0, direction = [[1, 0], [1, 0]])
+    origin.add_edge(0, 2, 1, direction = [[0, -1], [0, 1]])
+    origin.add_edge(0, 1, 0, direction = [[-1, 0], [0, 1]])
+    origin.add_edge(1, 2, 0, direction = [[1, 0], [-1, 0]])
+    origin.add_edge(1, 2, 1, direction = [[0, -1], [0, -1]])
     return origin
