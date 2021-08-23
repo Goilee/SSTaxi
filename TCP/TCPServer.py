@@ -20,10 +20,9 @@ class ServerSocket(TCP):
                 raise RuntimeError("wrong answer")
                 continue
             break
-    def getCrossList(self):
-        float = self.waitfloat()
+    def getCrossId(self):
         int = self.waitINT()
-        return [float,int]
+        return int
     def getWay(self):
         msg = self.waitList()
         return msg

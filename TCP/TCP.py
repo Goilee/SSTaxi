@@ -49,7 +49,6 @@ class TCP:
         msg = b''
         while msg == b'':
             msg = self.__receive()
-        print(msg)
         msg = struct.unpack("i",msg)
         self.__send("Here".encode())
         return msg[0]
@@ -57,7 +56,6 @@ class TCP:
         msg = b''
         while msg == b'':
             msg = self.__receive()
-        print(msg)
         msg = struct.unpack("f",msg)
         self.__send("Here".encode())
         return msg[0]

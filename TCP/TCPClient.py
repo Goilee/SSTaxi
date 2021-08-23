@@ -11,8 +11,7 @@ class ClientSocket(TCP):
             print("trouble")
         print("connected")
 
-    def sendCross(self, float, int):
-        self.sendFloat(float)
+    def sendCross(self, int):
         self.sendINT(int)
     def sendPos(self, list):
         self.waitSTR()
