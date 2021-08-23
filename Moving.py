@@ -34,11 +34,11 @@ class MoveController:
         action = np.array([0, 0])
         err_dir = env.get_lane_pos2(env.cur_pos, env.cur_angle).dist
         err_angle = env.get_lane_pos2(env.cur_pos, env.cur_angle).angle_rad
+        mask_down = cv2.cvtColor(camera[camera.shape[0] - 100:,
+                                 100:camera.shape[1] - 100, :], cv2.COLOR_RGB2HSV)
+        self.see_red = (((10 > mask_down[:, :, 0]) | (mask_down[:, :, 0] > 165)) &
+                        (mask_down[:, :, 2] > 100)).sum() > 5000
         if self.__state == ACTION_MOVE_TO_CR:
-            mask_down = cv2.cvtColor(camera[camera.shape[0] - 100:,
-                                     100:camera.shape[1] - 100, :], cv2.COLOR_RGB2HSV)
-            self.see_red = (((10 > mask_down[:, :, 0]) | (mask_down[:, :, 0] > 165)) &
-                            (mask_down[:, :, 2] > 100)).sum() > 5000
             if (not self.see_red) or self.__tflu < 1:
                 x = self.pid((err_dir-0.03) + err_angle/3)
                 action = np.array([self.speed - abs(x) / 30, x])
