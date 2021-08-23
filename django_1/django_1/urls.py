@@ -18,5 +18,5 @@ from django.urls import path, include  # новое добавление
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('riddles.urls')),  # новое добавление
+    path('', include('riddles.urls'))
 ]

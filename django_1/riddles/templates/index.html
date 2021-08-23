@@ -2,11 +2,51 @@
 {% load static %}
 <!--<img scr="/map_img.png" alt="Рабочее место" usemap="#workmap">-->
 <link href="{% static '/css.css' %}" rel="stylesheet">
+
+<div class="windows">
+<div style=" position: absolute;
+
+  width: 120vw;
+height: 100vw;
+left: 0px;
+top: -22px;background: radial-gradient(73.38% 73.38% at 97.09% 5.29%, #FCFF5B 0%, rgba(255, 255, 255, 0) 100%), radial-gradient(47.76% 114.33% at 2.24% 89.88%, #FFE600 0%, rgba(255, 255, 255, 0) 100%), linear-gradient(150.47deg, #84FF4A 12.85%, #66CC36 48.17%, rgba(28, 255, 91, 0.69) 91.02%);">
+
+ <div style ="
+position: absolute;
+
+
+left: calc(190px + (980 — 190) * ((100vw — 500px) / (1920 — 720)));
+
+top: calc(100vw/8);
+font-family: Montserrat;
+font-style: normal;
+font-weight: 900;
+font-size: 160px;
+line-height: 327px;
+color: #FFFFFF;
+transform: rotate(-90deg);
+z-index:2;
+">TAXI</div>
+<div style="position: absolute;
+width: calc(540px + (950 - 250) * ((100vw - 500px) / (1920 - 500)));;
+
+height: calc(340px + (530 - 340) * ((100vw - 500px) / (1920 - 500)));
+
+left: calc(10px + (110 — 10) * ((100vw — 500px) / (1920 — 720)));
+top: calc(100vw/12);
+
+background: #FFFFFF;
+box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.09);
+border-radius: 39px;
+
+z-index:0;"></div>
+
 <div style="position: absolute;
 width: 289px;
 height: 50px;
-left: 531px;
-top: 125px;
+
+left: calc(190px + (538 — 190) * ((100vw — 500px) / (1920 — 720)));
+top: 135px;
 
 font-family: Montserrat;
 font-weight:Light;">{{msg}}</div>
@@ -22,34 +62,18 @@ font-weight:bold;">{{Error}}</div>
 <div style="position: absolute;
 width: 289px;
 height: 50px;
-left: 531px;
+
+left: calc(190px + (538 — 190) * ((100vw — 500px) / (1920 — 720)));
 top: 390px;
 
 font-family: Montserrat;
 font-weight:bold;">Выбранный маршрут = {{ route }}</div>
-
-
-
-
-
-
- <div style="position: absolute;
-width: 289px;
-height: 50px;
-left: 531px;
-top: 390px;
-
-font-family: Montserrat;
-font-weight:bold;">Выбранный маршрут = {{ route }}</div>
-
-
-
 
 <button type="submit"  style="
   position: absolute;
-  width: 240px;
+  width: calc(80px + (240 — 80) * ((100vw — 500px) / (1920 — 720)));
 height: 50px;
-left: 531px;
+left: calc(190px + (531 — 190) * ((100vw — 500px) / (1920 — 720)));
 top: 166px;
 
 font-family: Montserrat;
@@ -57,13 +81,14 @@ background: #8ADD49;
 border: 2px solid #8ADD49;
 border-radius: 18px;
 font-weight:bold;">
-      Начало
+      Начальная точка: {{beg}}
   </button>
 
 <button type="submit" style="position: absolute;
-width: 240px;
+
+  width: calc(80px + (240 — 80) * ((100vw — 500px) / (1920 — 720)));
 height: 50px;
-left: 531px;
+left: calc(190px + (531 — 190) * ((100vw — 500px) / (1920 — 720)));
 top: 241px;
 
 font-family: Montserrat;
@@ -71,36 +96,30 @@ background: #DF5E5E;
 border: 2px solid #DF5E5E;
 border-radius: 18px;
 font-weight:bold;">
-        Конец
+        Конечная точка: {{end}}
 </button>
 
 
 <!--блок под карту-->
 
-<div class = "map" style = "background-image: url({% static '/img.png' %})">
+<div class = "map" style = "background-image: url({% static '/12.png' %})">
     <form action="#" method="post" id="nodes">
         {% csrf_token %}
-        <button name = 'city' value = '1' class = "btn" id = "city">but</button>
-        <button name = 'city' value = '2' class = "btn" id = "city" style = 'position: absolute;
-top: 50%;
-left: 50%; transform: translateX(-50%) translateY(-50%);'>but</button>
-        <button name = 'city' value = '3' class = "btn" id = "city" style = 'position: absolute;
-width: 100px;
-height: 50px;
-top: calc(100/7*4%);
-left: calc(100/7*6%);
-transform: translateX(calc(100/7*4%)) translateY(calc(100/7*6%));'>but</button>
-
-        </form>
+        <button class = "btn" name = 'city' value = '1'  style = "position: absolute; top: 21%; left: 50%; transform: translateX(-50%) translateY(-50%); color: white; font-size: 16px; " onclick="e => e.preventDefault()">1</button>
+        <button class = "btn" name = 'city' value = '3'  style = "position: absolute; top: 50%; left: 50%; transform: translateX(-50%) translateY(-50%); color: white; font-size: 16px;" onclick="e => e.preventDefault()">3</button>
+        <button class = "btn" name = 'city' value = '2' style = "position: absolute; top: 50%; left: 21%; transform: translateX(-50%) translateY(-50%); color: white; font-size: 16px;" onclick="e => e.preventDefault()">2</button>
+    </form>
 </div>
 
 <!--кнопка конеч-->
 <form action="#" method="POST" >
    {% csrf_token %}
- <button type="submit"  style="position: absolute;
-width: 369px;
+ <button type="submit" class="butt"  style="position: absolute;
+
+  width: calc(80px + (450 — 80) * ((100vw — 500px) / (1920 — 720)));
 height: 50px;
-left: 531px;
+
+left: calc(190px + (531 — 190) * ((100vw — 500px) / (1920 — 720)));
 top: 316px;
 
 background: #FFFFFF;
@@ -113,22 +132,21 @@ font-weight:bold;">
     </button>
 </form>
 
-<form action="#" method="POST" >
+<form action="#" method="POST">
    {% csrf_token %}
  <button type="submit" name="err" value='err' style="position: absolute;
-width: 100px;
+width: calc(30px + (120 — 30) * ((100vw — 500px) / (1920 — 720)));
 height: 125px;
-left: 800px;
+left: calc(280px + (800 — 280) * ((100vw — 500px) / (1920 — 720)));
 top: 166px;
-
 background: #FFFFFF;
-border: 2px solid #000000;
+border: 2px solid {{color}};
 box-sizing: border-box;
 border-radius: 18px;
 font-family: Montserrat;
-font-weight:bold;">
-        Отмена
-    </button>
+color: {{color}};
+font-weight:bold;"> {{back}} </button>
 </form>
-
-
+</div>
+</div>
+</div>
