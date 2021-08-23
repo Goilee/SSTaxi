@@ -1,4 +1,5 @@
 import socket
+import struct
 from socket import SHUT_RDWR
 
 class TCP:
@@ -44,15 +45,22 @@ class TCP:
         msg2 = msg2.decode()
         if msg2 != "Here":
             self.sendSTR(msg)
-
     def waitINT(self):
         msg = b''
         while msg == b'':
             msg = self.__receive()
         print(msg)
-        msg = int.from_bytes(msg,"big")
+        msg = struct.unpack("i",msg)
         self.__send("Here".encode())
-        return msg
+        return msg[0]
+    def waitFloat(self):
+        msg = b''
+        while msg == b'':
+            msg = self.__receive()
+        print(msg)
+        msg = struct.unpack("f",msg)
+        self.__send("Here".encode())
+        return msg[0]
     def waitList(self):
         msg = b''
         while msg == b'':
@@ -69,7 +77,15 @@ class TCP:
         if msg2 != "Here":
             self.sendINT(msg)
     def sendINT(self,msg):
-        self.__send(bytes([msg]))
+        self.__send(struct.pack("i", msg))
+        msg2 = b''
+        while msg2 == b'':
+            msg2 = self.__receive()
+        msg2 = msg2.decode()
+        if msg2 != "Here":
+            self.sendINT(msg)
+    def sendFloat(self,msg):
+        self.__send(struct.pack("f", msg))
         msg2 = b''
         while msg2 == b'':
             msg2 = self.__receive()

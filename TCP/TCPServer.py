@@ -21,8 +21,9 @@ class ServerSocket(TCP):
                 continue
             break
     def getCrossList(self):
-        list = self.waitList()
-        return list
+        float = self.waitfloat()
+        int = self.waitINT()
+        return [float,int]
     def getWay(self):
         msg = self.waitList()
         return msg
