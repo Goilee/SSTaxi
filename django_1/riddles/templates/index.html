@@ -105,11 +105,12 @@ font-weight:bold;">
 <div class = "map" style = "background-image: url({% static '/12.png' %})">
     <form action="#" method="post" id="nodes">
         {% csrf_token %}
-        <button class = "btn" name = 'city' value = '1'  style = "position: absolute; top: 21%; left: 50%; transform: translateX(-50%) translateY(-50%); color: white; font-size: 16px; " onclick="e => e.preventDefault()">1</button>
-        <button class = "btn" name = 'city' value = '3'  style = "position: absolute; top: 50%; left: 50%; transform: translateX(-50%) translateY(-50%); color: white; font-size: 16px;" onclick="e => e.preventDefault()">3</button>
-        <button class = "btn" name = 'city' value = '2' style = "position: absolute; top: 50%; left: 21%; transform: translateX(-50%) translateY(-50%); color: white; font-size: 16px;" onclick="e => e.preventDefault()">2</button>
+        <button class = "btn" name = 'city' value = '1'  style = "position: absolute; top: 21%; left: 50%; transform: translateX(-50%) translateY(-50%); font-size: 16px; color: {{one}}; ">1</button>
+        <button class = "btn" name = 'city' value = '3'  style = "position: absolute; top: 50%; left: 50%; transform: translateX(-50%) translateY(-50%); font-size: 16px; color: {{three}};">3</button>
+        <button class = "btn" name = 'city' value = '2' style = "position: absolute; top: 50%; left: 21%; transform: translateX(-50%) translateY(-50%); font-size: 16px; color: {{two}};">2</button>
     </form>
 </div>
+
 
 <!--кнопка конеч-->
 <form action="#" method="POST" >

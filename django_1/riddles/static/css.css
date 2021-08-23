@@ -25,7 +25,6 @@ box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.09);
 .map .btn {
     font-family: Montserrat;
     font-weight:bold;
-    color: white;
     font-size: 16px;
     border: none;
     background-color: transparent;
@@ -34,7 +33,6 @@ box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.09);
 .map .btn:hover,
 .map .btn:active{
     background: linear-gradient(150.47deg, #84FF4A 12.85%, #66CC36 48.17%, rgba(28, 255, 91, 0.69) 50.02%);
-    color: white ;
     fill: 60%;
     border-radius: 6px;
 }
