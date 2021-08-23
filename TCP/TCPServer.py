@@ -23,7 +23,7 @@ class ServerSocket(TCP):
     def getCrossList(self):
         float = self.waitFloat()
         int = self.waitINT()
-        return [float,int]
+        return [int,float]
     def getCrossId(self):
         int = self.waitINT()
         return int
