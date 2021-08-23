@@ -1,5 +1,5 @@
 from math import floor
-from mapParser.parser import parseYAML2GRAPH, wrongParser
+from mapParser.parser import parseYAML2GRAPH
 from pathFinder.bfs import bfs
 from SSTaxi.TCP.TCPServer import ServerSocket
 import socket
@@ -124,5 +124,5 @@ print('ip -', hostIp)
 sSocketUI = ServerSocket(25566, hostIp)
 sSocketR = ServerSocket(25565, hostIp)
 
-h = hub(sSocketR, sSocketUI, bfs, wrongParser, '../map.yaml')
+h = hub(sSocketR, sSocketUI, bfs, parseYAML2GRAPH, '../map.yaml')
 h.actionLoop()
