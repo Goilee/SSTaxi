@@ -49,7 +49,8 @@ class TCP:
         msg = b''
         while msg == b'':
             msg = self.__receive()
-        msg = int.from_bytes(msg)
+        print(msg)
+        msg = int.from_bytes(msg,"big")
         self.__send("Here".encode())
         return msg
     def waitList(self):
@@ -59,8 +60,16 @@ class TCP:
         msg = list(bytes(msg))
         self.__send("Here".encode())
         return msg
-    def sendINT_List(self,msg):
+    def sendList(self,msg):
         self.__send(bytes(msg))
+        msg2 = b''
+        while msg2 == b'':
+            msg2 = self.__receive()
+        msg2 = msg2.decode()
+        if msg2 != "Here":
+            self.sendINT(msg)
+    def sendINT(self,msg):
+        self.__send(bytes([msg]))
         msg2 = b''
         while msg2 == b'':
             msg2 = self.__receive()

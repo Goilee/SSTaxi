@@ -12,9 +12,9 @@ class ClientSocket(TCP):
         print("connected")
 
     def sendCross(self, int):
-        self.sendINT_List(int)
+        self.sendINT(int)
     def sendPos(self, list):
         self.waitSTR()
-        self.sendINT_List(list)
+        self.sendList(list)
 
 
