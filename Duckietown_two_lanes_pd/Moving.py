@@ -50,7 +50,7 @@ class MoveController:
                 self.__tmpdata = env.cur_angle + np.pi / 2
                 self.__tmpdata = self.__tmpdata if self.__tmpdata < np.pi else self.__tmpdata - np.pi * 2
             if abs(self.__tmpdata - env.cur_angle) > 0.07:
-                action = np.array([self.speed, 0.9])
+                action = np.array([self.speed, 1.0])
             else:
                 self.__tmpdata = None
                 self.__state = ACTION_STOP

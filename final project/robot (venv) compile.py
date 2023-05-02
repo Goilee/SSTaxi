@@ -13,10 +13,12 @@ from TCP.TCPClient import ClientSocket
 from gym_duckietown.envs import DuckietownEnv
 import traceback
 
-connect_flag = True
+connect_flag = False
 
 if connect_flag:
-    cli_sock = ClientSocket(25565, 'taxi', '192.168.189.26')
+    # cli_sock = ClientSocket(25565, 'taxi', '192.168.189.26')
+    cli_sock = ClientSocket(25565, 'taxi', '192.168.190.75')
+    # cli_sock = ClientSocket(25565, 'taxi', 'localhost')
 
 env = DuckietownEnv(map_name="map_test")
 
@@ -27,7 +29,7 @@ obs = env.step(np.array([0, 0]))[0]
 env.render()
 
 mover = MoveController()
-mover.new_action("undefined")
+mover.new_action(Moving.ACTION_MOVE_TO_CR)
 
 key_handler = key.KeyStateHandler()
 env.unwrapped.window.push_handlers(key_handler)

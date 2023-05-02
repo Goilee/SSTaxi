@@ -1,0 +1,38 @@
+.map {
+    position: relative;
+width: calc(250px + (480 - 250) * ((100vw - 500px) / (1920 - 500)));
+height: calc(250px + (480 - 250) * ((100vw - 500px) / (1920 - 500)));
+top:  120px;
+left: calc(40px + (120 — 40) * ((100vw — 500px) / (1920 — 720)));
+font-family: Montserrat;
+border-radius: 6px;
+background-size:cover;
+}
+
+.windows{
+
+  width: 100%;
+height: 100%;
+}
+.butt{
+}
+
+.butt:hover,
+.butt: active{
+box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.09);
+}
+
+.map .btn {
+    font-family: Montserrat;
+    font-weight:bold;
+    font-size: 16px;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+.map .btn:hover,
+.map .btn:active{
+    background: linear-gradient(150.47deg, #84FF4A 12.85%, #66CC36 48.17%, rgba(28, 255, 91, 0.69) 50.02%);
+    fill: 60%;
+    border-radius: 6px;
+}

@@ -1,18 +1,21 @@
-# from PIL import Image
-# import argparse
-# import sys
-# import gym
+from PIL import Image
+import argparse
+import sys
+import gym
 import numpy as np
 import cv2
+import pyglet
+from pyglet.window import key
 # import cv2.aruco as aruco
+from gym_duckietown.envs import DuckietownEnv
 # from TCP.TCPClient import ClientSocket
-# import random as rng
+import random as rng
 
 #cli_sock = ClientSocket(25565, 'hello server', '192.168.189.74')
 
 mask = np.zeros([400, 400, 1], dtype='float32')
 
-"""
+
 def findArucoMarkers(img, markerSize=6, totalMarkers=250, draw=True):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     key = getattr(aruco, f'DICT_{markerSize}X{markerSize}_{totalMarkers}')
@@ -23,7 +26,7 @@ def findArucoMarkers(img, markerSize=6, totalMarkers=250, draw=True):
     if draw:
         aruco.drawDetectedMarkers(img, bboxs)
     return [bboxs, ids]
-"""
+
 
 def glue(mat):
     return np.append(np.append(mat[:, :, 0], mat[:, :, 1], 0), mat[:, :, 2], 0)
@@ -90,7 +93,7 @@ class MoveController:
                             action = np.array([self.speed - abs(x) / 30, x])
                     else:
                         self.__state = 'waiting/send'
-                        print('send', aruco_id)
+                        # print('send', aruco_id)
                     # cli_sock.sendSTR(str(aruco_id))
                     # cli_sock.sendPos([int(env.cur_angle)])
             elif 'turn' in self.__state:
@@ -108,7 +111,7 @@ class MoveController:
                     pass
         return action
 
-"""
+
 def on_key_press(symbol, modifiers):
     if symbol == key.BACKSPACE or symbol == key.SLASH:
         print("RESET")
@@ -133,46 +136,46 @@ def update(dt):
     if key_handler[key.RIGHT]:
         action += np.array([0, -6])
 
-    img = cv2.cvtColor(obs, cv2.COLOR_BGR2RGB)
+    # img = cv2.cvtColor(obs, cv2.COLOR_BGR2RGB)
     # cv2.imshow("original", img)
-    aruco_img = img.copy()
-    aruco_marks = findArucoMarkers(aruco_img, draw=False)
+    # aruco_img = img.copy()
+    # aruco_marks = findArucoMarkers(aruco_img, draw=False)
     # loop through all the markers and augment each one
+    # aruco_idx = 0
+    # if len(aruco_marks[0]) != 0:
+    #     for bbox, id in zip(aruco_marks[0], aruco_marks[1]):
+    #         max_width = 0
+    #         max_height = 0
+    #         for i in range(1, len(bbox[0]), 2):
+    #             if max_width < bbox[0][i][0] - bbox[0][i - 1][0]:
+    #                 max_width = bbox[0][i][0] - bbox[0][i - 1][0]
+    #
+    #         for i in range(2, len(bbox[0]), 2):
+    #             if max_height < bbox[0][i][1] - bbox[0][i - 1][1]:
+    #                 max_height = bbox[0][i][1] - bbox[0][i - 1][1]
+    #
+    #         # print(bbox[0], max_width, max_height)
+    #         if max_width > 30 and max_height > 30:
+    #             #print("ok")
+    #             cv2.line(aruco_img, (int(bbox[0][0][0]), int(bbox[0][0][1])),
+    #                      (int(bbox[0][1][0]), int(bbox[0][1][1])),
+    #                      (255, 0, 0), 2)
+    #
+    #             cv2.line(aruco_img, (int(bbox[0][1][0]), int(bbox[0][1][1])),
+    #                      (int(bbox[0][2][0]), int(bbox[0][2][1])),
+    #                      (255, 0, 0), 2)
+    #
+    #             cv2.line(aruco_img, (int(bbox[0][2][0]), int(bbox[0][2][1])),
+    #                      (int(bbox[0][3][0]), int(bbox[0][3][1])),
+    #                      (255, 0, 0), 2)
+    #
+    #             cv2.line(aruco_img, (int(bbox[0][3][0]), int(bbox[0][3][1])),
+    #                      (int(bbox[0][0][0]), int(bbox[0][0][1])),
+    #                      (255, 0, 0), 2)
+    #             #print(id[0], [int(env.cur_angle)])
+    #             aruco_idx = id[0]
+    # cv2.imshow('aruco img', aruco_img)
     aruco_idx = 0
-    if len(aruco_marks[0]) != 0:
-        for bbox, id in zip(aruco_marks[0], aruco_marks[1]):
-            max_width = 0
-            max_height = 0
-            for i in range(1, len(bbox[0]), 2):
-                if max_width < bbox[0][i][0] - bbox[0][i - 1][0]:
-                    max_width = bbox[0][i][0] - bbox[0][i - 1][0]
-
-            for i in range(2, len(bbox[0]), 2):
-                if max_height < bbox[0][i][1] - bbox[0][i - 1][1]:
-                    max_height = bbox[0][i][1] - bbox[0][i - 1][1]
-
-            # print(bbox[0], max_width, max_height)
-            if max_width > 30 and max_height > 30:
-                #print("ok")
-                cv2.line(aruco_img, (int(bbox[0][0][0]), int(bbox[0][0][1])),
-                         (int(bbox[0][1][0]), int(bbox[0][1][1])),
-                         (255, 0, 0), 2)
-
-                cv2.line(aruco_img, (int(bbox[0][1][0]), int(bbox[0][1][1])),
-                         (int(bbox[0][2][0]), int(bbox[0][2][1])),
-                         (255, 0, 0), 2)
-
-                cv2.line(aruco_img, (int(bbox[0][2][0]), int(bbox[0][2][1])),
-                         (int(bbox[0][3][0]), int(bbox[0][3][1])),
-                         (255, 0, 0), 2)
-
-                cv2.line(aruco_img, (int(bbox[0][3][0]), int(bbox[0][3][1])),
-                         (int(bbox[0][0][0]), int(bbox[0][0][1])),
-                         (255, 0, 0), 2)
-                #print(id[0], [int(env.cur_angle)])
-                aruco_idx = id[0]
-    cv2.imshow('aruco img', aruco_img)
-
     action = mover.choose_action(env, obs, aruco_idx)
 
     cv2.circle(mask, (env.cur_pos[[0, 2]]*100).astype("int32"), 1, [1])
@@ -193,7 +196,7 @@ def update(dt):
             if color_hsv[2] > 70:
                 cv2.drawContours(drawing, [approx], 0, tuple([int(i) for i in color_rgb]), 3)
     cv2.imshow('path', drawing)
-    ines_img = drawing.copy()
+    lines_img = drawing.copy()
     lines = cv2.HoughLines(mask_down, 4, np.pi / 180, 200)
     if lines is not None:
         for line in range(len(lines)):
@@ -228,7 +231,7 @@ def update(dt):
     env.render()
 
 
-env = DuckietownEnv(map_name="map_test")
+env = DuckietownEnv(map_name="udem1")
 
 env.reset()
 obs = env.step(np.array([0, 0]))[0]
@@ -244,4 +247,4 @@ pyglet.clock.schedule_interval(update, 0.05)
 # Enter main event loop
 pyglet.app.run()
 
-env.close()"""
+env.close()
